@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="360° Volumetric portrait Avatar ">
+  <meta name="keywords" content="NeRF">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>360° Volumetric Portrait Avatar</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/3VP.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">360° Volumetric Portrait Avatar</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://ncs.is.mpg.de/person/jnehvi">Jalees Nehvi</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://ncs.is.mpg.de/person/bkabadayi">Berna Kabadayi</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://scholar.google.co.uk/citations?user=pZPD0hMAAAAJ&hl=en">Julien Valentin</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://ncs.is.mpg.de/person/jthies">Justus Thies</a><sup>1,2</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Max Planck Institute for Intelligent Systems, Tübingen, Germany, </span>
+            <span class="author-block"><sup>2</sup>Technical University of Darmstadt, </span>
+			<span class="author-block"><sup>3</sup>Microsoft</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <span class="link-block">
+                <a href="https://www.youtube.com"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="Coming Soon!"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (Coming Soon !)</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="Coming Soon!"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data (Coming Soon !)</span>
+                  </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <figure id="teaser" autoplay muted loop playsinline height="100%">
+		<img class="page-image" src="../static/images/teaser_06.png" alt="3VP Avatar" id="teaser" />
+      </figure>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">Teaser
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We propose 360° Volumetric Portrait (3VP) Avatar, a
+			novel method for reconstructing 360° photo-realistic portrait avatars of human subjects solely based on monocular
+			video inputs. State-of-the-art monocular avatar reconstruction methods rely on stable facial performance capturing.
+			However, the common usage of 3DMM-based facial tracking has its limits; side-views can hardly be captured and it
+			fails, especially, for back-views, as required inputs like facial landmarks or human parsing masks are missing. This
+			results in incomplete avatar reconstructions that only cover
+			the frontal hemisphere. In contrast to this, we propose a
+			template-based tracking of the torso, head and facial expressions which allows us to cover the appearance of a human subject from all sides. Thus, given a sequence of a
+			subject that is rotating in front of a single camera, we train
+			a neural volumetric representation based on neural radiance fields. A key challenge to construct this representation
+			is the modeling of appearance changes, especially, in the
+			mouth region (i.e., lips and teeth). We, therefore, propose a deformation-field-based blend basis which allows us to
+			interpolate between different appearance states. We evaluate our approach on captured real-world data and compare
+			against state-of-the-art monocular reconstruction methods.
+			In contrast to those, our method is the first monocular technique that reconstructs an entire 360° avatar.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+        <h2 class="title">BibTeX</h2>
+        <pre><code>@article{
+}</code></pre>
+    </div>
+</section>
+
+<footer>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/nerfies/nerfies.github.io">Template adapted from Nerfies</a> 
+</footer>
+</html>
+</html>
+
+<div class="page-footer">
+<div class="page-share">
+  <a href="https://twitter.com/intent/tweet?text=360° Volumetric Portrait Avatar&url=https://jalees018.github.io//3vp/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+  <a href="https://facebook.com/sharer.php?u=https://jalees018.github.io//3vp/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+  <a href="https://plus.google.com/share?url=https://jalees018.github.io//3vp/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+</div>
+<div class="page-tag">
+  
+	<a href="/tags#HumanAvatars" class="tag">&#35; HumanAvatars</a>
+  
+	<a href="/tags#NeRF" class="tag">&#35; NeRF</a>
+  
+</div>
+</div>
+<section class="comment-area">
+<div class="comment-wrapper">
+    
+</div>
+</section> <!-- End Comment Area -->
+
+</div> <!-- End Wrap Content -->
+</div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+</div>
+  
+ <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'G-6HBK1Z0QFG', 'auto');
+  ga('send', 'pageview');
+</script> <!-- End Analytics -->
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6HBK1Z0QFG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6HBK1Z0QFG');
+</script>
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/videos/paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/jalees018" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+	  <div class="page-share">
+		  <a href="https://twitter.com/intent/tweet?text=360° Volumetric Portrait Avatar&url=https://jalees018.github.io//3vp/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+		  <a href="https://facebook.com/sharer.php?u=https://jalees018.github.io//3vp/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+		  <a href="https://plus.google.com/share?url=https://jalees018.github.io//3vp/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+	  </div>
+    </div>
+	<div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+			<a href = "https://github.com/nerfies/nerfies.github.io">Template adapted from Nerfies</a>  
+		</div>
+		<div class="page-tag">
+  
+			<a href="/tags#HumanAvatars" class="tag">&#35; HumanAvatars</a>
+
+			<a href="/tags#NeRF" class="tag">&#35; NeRF</a>
+  
+	    </div>
+	  </div>
+	 </div>
+	</div>
+      
+    
+</footer>
+
+</body>
+</html>
