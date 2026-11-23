@@ -1,0 +1,26 @@
+# Main environment (training, rendering, tracking, SMPL-X fitting).
+# Tested: Python 3.8, PyTorch 2.0.1 + CUDA 11.8, gcc 11, RTX 4090 (Ubuntu 22.04).
+# PyTorch3D, nvdiffrast and bvh-distance-queries are compiled against PyTorch
+# and installed afterwards, see "Installation" in README.md.
+--extra-index-url https://download.pytorch.org/whl/cu118
+torch==2.0.1+cu118
+torchvision==0.15.2+cu118
+numpy==1.24.4
+scipy==1.10.1
+opencv-python==4.8.1.78
+Pillow==10.4.0
+matplotlib==3.7.5
+tqdm
+rich
+packaging
+ninja
+tensorboardX==2.6.2.2
+torch-ema==0.3
+trimesh==3.11.2
+networkx==3.1
+pyrender==0.1.45
+PyOpenGL==3.1.0
+pymeshlab==2023.12.post2
+smplx==0.1.28
+fvcore==0.1.5.post20221221
+iopath==0.1.10

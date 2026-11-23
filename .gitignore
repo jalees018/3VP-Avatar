@@ -1,0 +1,37 @@
+# Python / build
+__pycache__/
+*.py[cod]
+build/
+dist/
+*.egg-info/
+*.so
+.ipynb_checkpoints/
+
+# editors / OS
+.vscode/
+.idea/
+.DS_Store
+._*
+*.swp
+
+# data / models / results (configured in paths.py); anchored to the repository root
+/data/
+/Images/
+/Tracker/
+/models/
+/external/
+/workspace/
+/*_ws/
+/*_ws_*/
+/*.json
+*.log
+events.out.tfevents.*
+
+# checkpoints and weights: downloaded separately (see README)
+*.pth
+*.pt
+*.ckpt
+*.tar
+*.pkl
+*.npz
+!/assets/smplx_masks.npz

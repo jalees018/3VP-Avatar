@@ -1,0 +1,15 @@
+# conda env create -f environment.yml && conda activate 3vp
+# (then install the compiled packages, see "Installation" in README.md)
+name: 3vp
+channels:
+  - nvidia/label/cuda-11.8.0
+  - defaults
+dependencies:
+  - python=3.8
+  - pip=24.2
+  - setuptools=75.1.0
+  - cuda-nvcc=11.8.89
+  - cuda-cudart-dev=11.8.89
+  - cuda-libraries-dev=11.8.0
+  - pip:
+      - -r requirements.txt
