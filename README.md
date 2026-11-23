@@ -1,39 +1,58 @@
-# 360° Volumetric Portrait Avatar (3VP Avatar)
+<div align="center">
 
-Official implementation of **360° Volumetric Portrait Avatar** (GCPR 2024, Oral).
+# 360° Volumetric Portrait Avatar
 
-[Jalees Nehvi](https://jalees018.github.io/), Berna Kabadayi, Julien Valentin, Justus Thies
+**GCPR 2024 (Oral)**
 
-[Project page](https://jalees018.github.io/3VP-Avatar/) · [Paper](https://arxiv.org/abs/2312.05311) · [Video](https://www.youtube.com/watch?v=hSPnf6Kuyvo)
+[Jalees Nehvi](https://jalees018.github.io/)<sup>1</sup>, [Berna Kabadayi](https://ncs.is.mpg.de/person/bkabadayi)<sup>1</sup>, [Julien Valentin](https://scholar.google.co.uk/citations?user=pZPD0hMAAAAJ&hl=en)<sup>3</sup>, [Justus Thies](https://justusthies.github.io/)<sup>1,2</sup>
 
-3VP Avatar reconstructs a photo-realistic 360° portrait avatar of a person from a single monocular video
-of the subject rotating in front of the camera. Instead of 3DMM-based face tracking (which fails for side
-and back views) we use template-based tracking of torso, head and facial expressions, and train a neural
-radiance field conditioned on the tracked template. A deformation-field-based blend basis models
-appearance changes in the mouth region (lips, teeth).
+<sup>1</sup>Max Planck Institute for Intelligent Systems, Tübingen &nbsp;&nbsp; <sup>2</sup>Technical University of Darmstadt &nbsp;&nbsp; <sup>3</sup>Microsoft
 
----
+[Project Page](https://jalees018.github.io/3VP-Avatar/) | [Paper](https://arxiv.org/pdf/2312.05311) | [arXiv](https://arxiv.org/abs/2312.05311) | [Video](https://www.youtube.com/watch?v=hSPnf6Kuyvo)
+
+<img src="assets/teaser.png" alt="3VP Avatar teaser" width="100%">
+
+</div>
+
+Given a monocular video of a person rotating in front of a single camera, 3VP Avatar reconstructs a photo-realistic 360°
+portrait avatar. Facial tracking based on 3D morphable models hardly captures side views and fails for back views, so previous
+avatars only cover the frontal hemisphere. We instead track the torso, head and facial expressions with a textured template of
+the person, and use the tracking to train a neural radiance field that covers the person from all sides. A
+deformation-field-based blend basis interpolates between appearance states, especially in the mouth region (lips and teeth).
+
+This repository contains the official implementation.
+
+## Method overview
+
+1. **Template.** The static 360° turn is reconstructed as a textured canonical mesh, to which SMPL-X is registered.
+2. **Template-based tracking.** The template is fitted to every frame of the video by differentiable rendering, see
+   [Template-based tracking](#template-based-tracking).
+3. **Avatar (stage 1).** Sample points are warped from the tracked mesh to the canonical space of a hash-grid NeRF. A blend
+   basis of deformation fields, weighted by learned latents, models appearance changes.
+4. **Mapping network (stage 2).** Predicts the blend weights from expression coefficients and jaw pose, to animate the avatar.
+
+```
+static 360° turn ──► textured canonical mesh ──► SMPL-X registration
+                                                        │
+video frames + DECA ────────────────────► template-based tracking
+                                                        │
+expression, jaw ──► mapping network ──► blend basis ──► canonical NeRF ──► 360° render
+```
 
 ## Repository layout
 
-```
-paths.py                 all file-system locations (override with VP_* environment variables)
-smplx_deformer.py        SMPL-X with per-vertex offsets and skinning transforms (on top of `pip install smplx`)
-run_pipeline.sh          end-to-end pipeline for one subject
-preprocessing/           keypoints, canonical mesh normalisation, landmarks, SMPL-X registration
-tracking/                template-based tracking of torso, head and expressions (nvdiffrast)
-postprocessing/          ray-sampling maps, smoothing of tracked meshes, depth maps
-nerf/                    conditional NeRF, renderer, data loader, trainer, options
-train.py / render.py     training (stage 1 / stage 2) and rendering
-gridencoder/ raymarching/ shencoder/   CUDA extensions (from torch-ngp)
-assets/                  masks / topology on the SMPL-X mesh (no SMPL-X geometry)
-```
-
-## Contents
-
-[Installation](#installation) · [Models and assets](#models-and-assets) · [Downloads](#downloads-dataset-and-checkpoints) ·
-[Data layout](#data-layout) · [Testing](#testing-with-the-released-checkpoints) · [Full pipeline](#full-pipeline) ·
-[Template-based tracking](#template-based-tracking) · [Training](#training) · [Re-enactment](#re-enactment) · [Citation](#citation)
+| Path | Content |
+|---|---|
+| `run_pipeline.sh` | End-to-end pipeline for one subject. |
+| `preprocessing/` | Keypoints, canonical mesh normalisation, landmarks, SMPL-X registration, DECA. |
+| `tracking/` | Template-based tracking of torso, head and expressions (nvdiffrast). |
+| `postprocessing/` | Error maps, smoothing of the tracked meshes, depth maps. |
+| `nerf/` | Conditional NeRF, renderer, data loader, trainer, options. |
+| `train.py`, `render.py` | Training (stages 1 and 2) and rendering. |
+| `gridencoder/`, `raymarching/`, `shencoder/` | CUDA extensions from torch-ngp. |
+| `smplx_deformer.py` | SMPL-X with per-vertex offsets and skinning transforms, on top of `smplx`. |
+| `paths.py` | All data locations. |
+| `assets/` | Masks and topology on the SMPL-X mesh (no SMPL-X geometry). |
 
 ## Installation
 
@@ -275,7 +294,31 @@ Add `--drive --driver <other_subject> --driver_incrementor <first_frame> --drive
 --my_neutral <neutral_frame>` to the full-model `render.py` command, with the retargeted meshes in `Tracker/Meshes/<driving_folder>/With_Mean/`
 (`--driving_folder`). The retargeting script that creates these meshes is not included.
 
+## License
+
+This code is released under a [software copyright license for non-commercial scientific research purposes](LICENSE).
+Any commercial use is prohibited; for commercial licensing, contact jalees.nehvi@tu-darmstadt.de.
+Third-party components keep their own licenses, listed below.
+
+## Acknowledgements and licenses
+
+This code builds on:
+
+* The NeRF backbone and the CUDA extensions build on [torch-ngp](https://github.com/ashawkey/torch-ngp) (MIT).
+* `tracking/tracker.py` and `tracking/util.py` are derived from the samples of
+  [nvdiffrast](https://github.com/NVlabs/nvdiffrast) and are subject to the Nvidia Source Code License
+  ([`LICENSES/nvdiffrast.txt`](LICENSES/nvdiffrast.txt)): they may be used **non-commercially only** (research or
+  evaluation). `preprocessing/landmarks.py` and `preprocessing/process.py` also keep NVIDIA's copyright header.
+* [SMPL-X](https://smpl-x.is.tue.mpg.de), [DECA](https://github.com/yfeng95/DECA) / FLAME,
+  [bvh-distance-queries](https://github.com/YuliangXiu/bvh-distance-queries),
+  [InsightFace](https://github.com/deepinsight/insightface) (ArcFace weights: non-commercial research only),
+  [face-alignment](https://github.com/1adrianb/face-alignment) and [PyTorch3D](https://github.com/facebookresearch/pytorch3d).
+
+Please also cite these works and respect their licenses when using this code.
+
 ## Citation
+
+If you find this work useful, please cite:
 
 ```bibtex
 @inproceedings{nehvi2024volumetricportraitavatar,
@@ -289,18 +332,3 @@ Add `--drive --driver <other_subject> --driver_incrementor <first_frame> --drive
   doi       = {10.1007/978-3-031-85187-2_1}
 }
 ```
-
-## License and acknowledgements
-
-The code is released for non-commercial scientific research, see [`LICENSE`](LICENSE). Third-party parts keep their
-own licenses:
-
-* The NeRF backbone and the CUDA extensions build on [torch-ngp](https://github.com/ashawkey/torch-ngp) (MIT).
-* `tracking/tracker.py` and `tracking/util.py` are derived from the samples of
-  [nvdiffrast](https://github.com/NVlabs/nvdiffrast) and are subject to the Nvidia Source Code License
-  ([`LICENSES/nvdiffrast.txt`](LICENSES/nvdiffrast.txt)): they may be used **non-commercially only** (research or
-  evaluation). `preprocessing/landmarks.py` and `preprocessing/process.py` also keep NVIDIA's copyright header.
-* Please also respect the licenses of [SMPL-X](https://smpl-x.is.tue.mpg.de), [DECA](https://github.com/yfeng95/DECA) / FLAME,
-  [bvh-distance-queries](https://github.com/YuliangXiu/bvh-distance-queries),
-  [InsightFace](https://github.com/deepinsight/insightface) (ArcFace weights: non-commercial research only),
-  [face-alignment](https://github.com/1adrianb/face-alignment) and [PyTorch3D](https://github.com/facebookresearch/pytorch3d).
